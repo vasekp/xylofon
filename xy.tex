@@ -9,6 +9,7 @@
 \newcount\hh
 \newbox\textbox
 \newif\iflead
+\newif\ifprevlead
 
 \parindent=0pt
 \parskip=10pt
@@ -25,6 +26,7 @@
 
 \def\nota#1#2#3{%
   \leavevmode
+  \iflead \prevleadtrue \else \prevleadfalse \fi
   \setbox\textbox=\hbox{#3\hskip0pt}%
   \ww=\wd\textbox
   \ifdim \ww<\minw \ww=\minw \fi
@@ -45,9 +47,10 @@
     \vskip \hh\unit
     %\hbox to \ww{\hfil#3\hfil}%
     \hbox to \ww{%
-      \iflead \lead\hfil \else \hfil \fi
+      \ifprevlead \lead\hfil \else \hfil \fi
       \global\leadfalse
-      #3\hfil}%
+      #3\hfil
+    }%
   }%
   %\ignorespaces
   \hskip\tolskip
