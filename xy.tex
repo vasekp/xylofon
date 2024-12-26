@@ -1,0 +1,96 @@
+\newdimen\unit \unit=2mm
+\newdimen\punit \punit=4mm
+\newdimen\rem
+\newdimen\ww
+\newdimen\minw \minw=5mm
+\newskip\tolskip \tolskip=0pt minus 2pt
+\newcount\min \min=0
+\newcount\max \max=12
+\newcount\hh
+\newbox\textbox
+\newif\iflead
+
+\parindent=0pt
+\parskip=10pt
+\magnification=1800
+\footline{\hfil}
+\font\largesym=cmsy10 at 24pt
+\textfont2=\largesym
+
+\catcode`*=13
+\def\lead{\leaders\vrule height 2.25pt depth -2pt}
+\def*{\global\leadtrue\lead}
+
+\def\\{\hfill\break}
+
+\def\nota#1#2#3{%
+  \leavevmode
+  \setbox\textbox=\hbox{#3\hskip0pt}%
+  \ww=\wd\textbox
+  \ifdim \ww<\minw \ww=\minw \fi
+  \vbox{%
+    \hh=-#1%
+    \advance\hh by \max
+    \vskip\hh\unit
+    \hbox to \ww{%
+      \hfil
+      \pdfliteral{q #2 rg}%
+      \hbox to 0pt{\hss$\bullet$\hss}%
+      \pdfliteral{Q}%
+      \hbox to 0pt{\hss$\circ$\hss}%
+      \hfil
+    }%
+    \hh=#1%
+    \advance\hh by -\min
+    \vskip \hh\unit
+    %\hbox to \ww{\hfil#3\hfil}%
+    \hbox to \ww{%
+      \iflead \lead\hfil \else \hfil \fi
+      \global\leadfalse
+      #3\hfil}%
+  }%
+  %\ignorespaces
+  \hskip\tolskip
+  \relax
+}
+
+\def\c#1{\nota{0}{1 0 0}{#1}}
+\def\d#1{\nota{1}{0 1 0}{#1}}
+\def\e#1{\nota{2}{1 1 0}{#1}}
+\def\f#1{\nota{3}{0.6 0.4 0}{#1}}
+\def\g#1{\nota{4}{0.2 0.2 1}{#1}}
+\def\a#1{\nota{5}{0.7 0 0.7}{#1}}
+\def\h#1{\nota{6}{1 1 1}{#1}}
+\def\C#1{\nota{7}{1 0 0}{#1}}
+\def\D#1{\nota{8}{0 1 0}{#1}}
+\def\E#1{\nota{9}{1 1 0}{#1}}
+\def\F#1{\nota{10}{0.6 0.4 0}{#1}}
+\def\G#1{\nota{11}{0.2 0.2 1}{#1}}
+\def\A#1{\nota{12}{0.7 0 0.7}{#1}}
+
+\def\p{\hskip\punit\hskip\tolskip}
+\def\pp{*\hskip\punit\hskip\tolskip}
+
+\def\toix#1{%
+  \ifx#1c 0 \else
+  \ifx#1d 1 \else
+  \ifx#1e 2 \else
+  \ifx#1f 3 \else
+  \ifx#1g 4 \else
+  \ifx#1a 5 \else
+  \ifx#1h 6 \else
+  \ifx#1C 7 \else
+  \ifx#1D 8 \else
+  \ifx#1E 9 \else
+  \ifx#1F 10 \else
+  \ifx#1G 11 \else
+  \ifx#1A 12 \else
+  #1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\font\nadpis=csssbx12
+\def\pis#1#2#3{%
+  \vfill\eject
+  \min=\toix{#2}%
+  \max=\toix{#3}%
+  {\nadpis #1}%
+  \global\leadfalse}
