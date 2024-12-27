@@ -17,15 +17,13 @@
 \font\largesym=cmsy10 at 28pt
 \textfont2=\largesym
 
-\catcode`*=13
 \def\lead{\leaders\vrule height 2.25pt depth -2pt}
-\def*{\global\leadtrue\lead}
 
 \def\\{\hfill\break}
 
-\def\nota#1#2#3#4{%
+\def\nota#1#2#3{%
   \leavevmode
-  \setbox\textbox=\hbox{#3\hskip0pt}%
+  \setbox\textbox=\hbox{#2\hskip0pt}%
   \ww=\wd\textbox
   \ifdim \ww<\minw \ww=\minw \fi
   \vbox{%
@@ -34,7 +32,7 @@
     \vskip\hh\unit
     \hbox to \ww{%
       \hfil
-      \pdfliteral{q #2 rg}%
+      \pdfliteral{q \barva{#1} rg}%
       \hbox to 0pt{\hss$\bullet$\hss}%
       \pdfliteral{Q}%
       \hbox to 0pt{\hss$\circ$\hss}%
@@ -43,50 +41,49 @@
     \hh=#1%
     \advance\hh by -\min
     \vskip \hh\unit
-    %\hbox to \ww{\hfil#3\hfil}%
     \hbox to \ww{%
       \iflead \lead\hfil \else \hfil \fi
-      #3#4%
+      #2#3%
       \iflead \lead\hfil \else \hfil \fi
     }%
   }%
-  %\ignorespaces
   \hskip\tolskip
   \relax
 }
 
-\def\c{\nota{0}{1 0 0}}
-\def\d{\nota{1}{0 1 0}}
-\def\e{\nota{2}{1 1 0}}
-\def\f{\nota{3}{0.6 0.4 0}}
-\def\g{\nota{4}{0.2 0.2 1}}
-\def\a{\nota{5}{0.7 0 0.7}}
-\def\h{\nota{6}{1 1 1}}
-\def\C{\nota{7}{1 0 0}}
-\def\D{\nota{8}{0 1 0}}
-\def\E{\nota{9}{1 1 0}}
-\def\F{\nota{10}{0.6 0.4 0}}
-\def\G{\nota{11}{0.2 0.2 1}}
-\def\A{\nota{12}{0.7 0 0.7}}
-
 \def\p{\hskip\punit\hskip\tolskip}
-\def\pp{*\hskip\punit\hskip\tolskip}
+\def\pp{\lead\hskip\punit\hskip\tolskip}
 
-\def\toix#1{%
-  \ifx#1c 0 \else
-  \ifx#1d 1 \else
-  \ifx#1e 2 \else
-  \ifx#1f 3 \else
-  \ifx#1g 4 \else
-  \ifx#1a 5 \else
-  \ifx#1h 6 \else
-  \ifx#1C 7 \else
-  \ifx#1D 8 \else
-  \ifx#1E 9 \else
-  \ifx#1F 10 \else
-  \ifx#1G 11 \else
-  \ifx#1A 12 \else
-  #1\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+\newcount\c \c=0
+\newcount\d \d=1
+\newcount\e \e=2
+\newcount\f \f=3
+\newcount\g \g=4
+\newcount\a \a=5
+\newcount\h \h=6
+\newcount\C \C=7
+\newcount\D \D=8
+\newcount\E \E=9
+\newcount\F \F=10
+\newcount\G \G=11
+\newcount\A \A=12
+
+\def\toix#1{\csname#1\endcsname}
+
+\def\barva#1{\ifcase#1%
+  1 0 0\or
+  0 1 0\or
+  1 1 0\or
+  0.6 0.4 0\or
+  0.2 0.2 1\or
+  0.7 0 0.7\or
+  1 1 1\or
+  1 0 0\or
+  0 1 0\or
+  1 1 0\or
+  0.6 0.4 0\or
+  0.2 0.2 1\or
+  0.7 0 0.7\fi}
 
 \font\nadpis=csssbx12
 \def\pis#1#2#3{%
@@ -98,7 +95,7 @@
 
 \catcode`[=13
 \def[#1:#2]#3{%
-  \csname#1\endcsname{#2}{%
+  \nota{\toix{#1}}{#2}{%
     \ifx#3[%
       \global\leadtrue
     \else\ifx#3-%
