@@ -9,7 +9,6 @@
 \newcount\hh
 \newbox\textbox
 \newif\iflead
-\newif\ifprevlead
 
 \parindent=0pt
 \parskip=10pt
@@ -24,9 +23,8 @@
 
 \def\\{\hfill\break}
 
-\def\nota#1#2#3{%
+\def\nota#1#2#3#4{%
   \leavevmode
-  \iflead \prevleadtrue \else \prevleadfalse \fi
   \setbox\textbox=\hbox{#3\hskip0pt}%
   \ww=\wd\textbox
   \ifdim \ww<\minw \ww=\minw \fi
@@ -47,9 +45,9 @@
     \vskip \hh\unit
     %\hbox to \ww{\hfil#3\hfil}%
     \hbox to \ww{%
-      \ifprevlead \lead\hfil \else \hfil \fi
-      \global\leadfalse
-      #3\hfil
+      \iflead \lead\hfil \else \hfil \fi
+      #3#4%
+      \iflead \lead\hfil \else \hfil \fi
     }%
   }%
   %\ignorespaces
@@ -57,19 +55,19 @@
   \relax
 }
 
-\def\c#1{\nota{0}{1 0 0}{#1}}
-\def\d#1{\nota{1}{0 1 0}{#1}}
-\def\e#1{\nota{2}{1 1 0}{#1}}
-\def\f#1{\nota{3}{0.6 0.4 0}{#1}}
-\def\g#1{\nota{4}{0.2 0.2 1}{#1}}
-\def\a#1{\nota{5}{0.7 0 0.7}{#1}}
-\def\h#1{\nota{6}{1 1 1}{#1}}
-\def\C#1{\nota{7}{1 0 0}{#1}}
-\def\D#1{\nota{8}{0 1 0}{#1}}
-\def\E#1{\nota{9}{1 1 0}{#1}}
-\def\F#1{\nota{10}{0.6 0.4 0}{#1}}
-\def\G#1{\nota{11}{0.2 0.2 1}{#1}}
-\def\A#1{\nota{12}{0.7 0 0.7}{#1}}
+\def\c{\nota{0}{1 0 0}}
+\def\d{\nota{1}{0 1 0}}
+\def\e{\nota{2}{1 1 0}}
+\def\f{\nota{3}{0.6 0.4 0}}
+\def\g{\nota{4}{0.2 0.2 1}}
+\def\a{\nota{5}{0.7 0 0.7}}
+\def\h{\nota{6}{1 1 1}}
+\def\C{\nota{7}{1 0 0}}
+\def\D{\nota{8}{0 1 0}}
+\def\E{\nota{9}{1 1 0}}
+\def\F{\nota{10}{0.6 0.4 0}}
+\def\G{\nota{11}{0.2 0.2 1}}
+\def\A{\nota{12}{0.7 0 0.7}}
 
 \def\p{\hskip\punit\hskip\tolskip}
 \def\pp{*\hskip\punit\hskip\tolskip}
@@ -97,3 +95,27 @@
   \max=\toix{#3}%
   {\nadpis #1}%
   \global\leadfalse}
+
+\catcode`[=13
+\def[#1:#2]#3{%
+  \csname#1\endcsname{#2}{%
+    \ifx#3[%
+      \global\leadtrue
+    \else\ifx#3-%
+      \global\leadtrue
+    \else
+      \global\leadfalse
+    \fi\fi}%
+  \ifx#3-%
+    \pp\expandafter\kill
+  \fi
+  #3%
+}
+
+\def\kill#1{}
+
+\catcode`_=13
+\def_#1{\ifx#1[\pp[\else\p\leadfalse\fi}
+
+\catcode` =13
+\def {\space}
