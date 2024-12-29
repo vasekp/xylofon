@@ -1,9 +1,8 @@
 \newdimen\unit \unit=2mm
-\newdimen\punit \punit=4mm
+\newskip\pskip \pskip=3mm minus 3mm
 \newdimen\rem
 \newdimen\ww
 \newdimen\minw \minw=5mm
-\newskip\tolskip \tolskip=0pt minus 2pt
 \newcount\min \min=0
 \newcount\max \max=12
 \newcount\hh
@@ -13,6 +12,7 @@
 \parindent=0pt
 \parskip=10pt
 \magnification=1800
+\linepenalty=10000
 \footline{\hfil}
 \font\largesym=cmsy10 at 28pt
 \textfont2=\largesym
@@ -47,12 +47,11 @@
       \iflead \lead\hfil \else \hfil \fi
     }%
   }%
-  \hskip\tolskip
   \relax
 }
 
-\def\p{\hskip\punit\hskip\tolskip}
-\def\pp{\lead\hskip\punit\hskip\tolskip}
+\def\p{\hskip\pskip\nobreak}
+\def\pp{\lead\hskip\pskip\nobreak}
 
 \newcount\c \c=0
 \newcount\d \d=1
