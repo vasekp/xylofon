@@ -26,7 +26,7 @@
 
 \def\\{\hfill\break}
 
-\def\nota#1#2#3{%
+\long\def\nota#1#2#3{%
   \leavevmode
   \setbox\textbox=\hbox{#2\hskip0pt}%
   \ww=\wd\textbox
@@ -108,7 +108,7 @@
   \global\leadfalse}
 
 \catcode`[=13
-\def[#1:#2]#3{%
+\long\def[#1:#2]#3{%
   \nota{\toix{#1}}{#2}{%
     \ifx#3[%
       \global\leadtrue
