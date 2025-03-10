@@ -3,10 +3,10 @@ Prostě noty na <s>xylofon</s>zvonkohru pro písničky, co máme z různých dů
 ```tex
 \pis{Maličká su}{c}{g}
 
-[e:Ma][e:lič][d:ká]_ [c:su,]_\
-[e:hu][e:sy] [d:pa]-[c:su.]_\
+[e:Ma][e:lič][d:ká]_ [c:su,]_
+[e:hu][e:sy] [d:pa]-[c:su.]_
 ```
 
-![obrazek](https://github.com/user-attachments/assets/ab7de669-0479-4926-be31-d4c23e0cef7a)
+![obrazek](https://github.com/user-attachments/assets/83be61ec-30cd-4b63-bae4-ea0d6356d664)
 
 Překlad: `pdfcsplain pisnicky.tex`
