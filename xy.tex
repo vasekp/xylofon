@@ -34,9 +34,15 @@
   \xdiff=\wd\textbox
   \advance\xdiff by -\minw
   \divide\xdiff by 2
-  \ifdim \prevxdiff>-\xdiff \prevxdiff=-\xdiff \fi
-  \ifdim \prevxdiff<0pt \prevxdiff=0pt \fi
-  \hskip -\prevxdiff
+  \ifdim \prevxdiff<0pt
+    \ifdim \xdiff>0pt
+      \ifdim \xdiff<-\prevxdiff \hskip -\xdiff \else \hskip \prevxdiff \fi
+    \fi
+  \else
+    \ifdim \xdiff<0pt
+      \ifdim \prevxdiff<-\xdiff \hskip -\prevxdiff \else \hskip \xdiff \fi
+    \fi
+  \fi
   \vbox{%
     \hh=-#1%
     \advance\hh by \max
@@ -58,7 +64,6 @@
       \iflead \lead\hfil \else \hfil \fi
     }%
   }%
-  \ifdim \xdiff>0pt \xdiff=0pt \fi
   \relax
 }
 
