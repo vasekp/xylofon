@@ -9,6 +9,11 @@
 \newbox\textbox
 \newif\iflead
 
+\newdimen\normalspace \normalspace=3.33pt
+\newdimen\spaceused
+\newdimen\spacereduc
+\newdimen\spacetemp
+
 \parindent=0pt
 \parskip=10pt minus 2pt
 \magnification=1800
@@ -26,6 +31,12 @@
   \setbox\textbox=\hbox{#2\hskip0pt}%
   \ww=\wd\textbox
   \ifdim \ww<\minw \ww=\minw \fi
+  \spacetemp=\minw
+  \advance\spacetemp by -\wd\textbox
+  \ifdim \spacetemp<0pt \spacetemp=0pt \fi
+  \divide\spacetemp by 2
+  \ifdim \spacereduc>\spacetemp \spacereduc=\spacetemp \fi
+  \hskip -\spacereduc
   \vbox{%
     \hh=-#1%
     \advance\hh by \max
@@ -47,6 +58,8 @@
       \iflead \lead\hfil \else \hfil \fi
     }%
   }%
+  \global\spaceused=\spacetemp
+  \global\spacereduc=0pt
   \relax
 }
 
@@ -84,6 +97,8 @@
   0.2 0.2 1\or
   0.7 0 0.7\fi}
 
+\everypar{\global\spacereduc=0pt}
+
 \font\nadpis=csssbx10 at 12pt
 \def\pis#1#2#3{%
   \vfill\eject
@@ -102,6 +117,14 @@
     \else
       \global\leadfalse
     \fi\fi}%
+  \ifx#3\space
+    \ifdim \spaceused>\normalspace \spaceused=\normalspace \fi
+    \spacetemp=\normalspace
+    \advance\spacetemp by -\spaceused
+    \hskip -\spaceused
+    \global\spaceused=\normalspace
+    \global\spacereduc=\spacetemp
+  \fi
   \ifx#3-%
     \pp\expandafter\kill
   \fi
@@ -114,4 +137,4 @@
 \let_=\p
 
 \catcode` =13
-\def {\space}
+\let \space
