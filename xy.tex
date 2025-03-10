@@ -12,6 +12,8 @@
 \newdimen\normalspace \normalspace=3.33pt
 \newdimen\xdiff
 \newdimen\prevxdiff
+\newdimen\skiplen
+\newskip\leadskip
 
 \parindent=0pt
 \parskip=10pt minus 2pt
@@ -34,15 +36,21 @@
   \xdiff=\wd\textbox
   \advance\xdiff by -\minw
   \divide\xdiff by 2
+  \skiplen=0pt
   \ifdim \prevxdiff<0pt
     \ifdim \xdiff>0pt
-      \ifdim \xdiff<-\prevxdiff \hskip -\xdiff \else \hskip \prevxdiff \fi
+      \ifdim \xdiff<-\prevxdiff \skiplen=\xdiff \else \skiplen=-\prevxdiff \fi
     \fi
   \else
     \ifdim \xdiff<0pt
-      \ifdim \prevxdiff<-\xdiff \hskip -\prevxdiff \else \hskip \xdiff \fi
+      \ifdim \prevxdiff<-\xdiff \skiplen=\prevxdiff \else \skiplen=-\xdiff \fi
     \fi
   \fi
+  \hskip -\skiplen
+  \ifdim\prevxdiff<0pt \leadskip=-\prevxdiff \else \leadskip=0pt \fi
+  \ifdim\xdiff<0pt \advance\leadskip by -\xdiff \fi
+  \advance\leadskip by -\skiplen
+  \ifdim\leadskip<0.7pt \leadskip=0pt \fi
   \vbox{%
     \hh=-#1%
     \advance\hh by \max
@@ -59,16 +67,22 @@
     \advance\hh by -\min
     \vskip \hh\unit
     \hbox to \ww{%
-      \iflead \lead\hfil \else \hfil \fi
+      \hfil
+      \iflead\hbox to 0pt{\hskip-\leadskip \lead\hfil}\fi
       #2#3%
-      \iflead \lead\hfil \else \hfil \fi
+      \hfil
     }%
   }%
   \relax
 }
 
 \def\p{\hskip\pskip\nobreak\ignorespaces}
-\def\pp{\lead\hskip\pskip\nobreak\ignorespaces}
+\def\pp{%
+  \leadskip=\pskip
+  \ifdim\xdiff<0pt \hskip\xdiff \fi
+  \advance\leadskip by -\xdiff
+  \xdiff=0pt
+  \lead\hskip\leadskip\nobreak\ignorespaces}
 
 \newcount\c \c=0
 \newcount\d \d=1
