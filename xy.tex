@@ -10,9 +10,8 @@
 \newif\iflead
 
 \newdimen\normalspace \normalspace=3.33pt
-\newdimen\spaceused
-\newdimen\spacereduc
-\newdimen\spacetemp
+\newdimen\underflow
+\newdimen\overflow
 
 \parindent=0pt
 \parskip=10pt minus 2pt
@@ -31,12 +30,12 @@
   \setbox\textbox=\hbox{#2\hskip0pt}%
   \ww=\wd\textbox
   \ifdim \ww<\minw \ww=\minw \fi
-  \spacetemp=\minw
-  \advance\spacetemp by -\wd\textbox
-  \ifdim \spacetemp<0pt \spacetemp=0pt \fi
-  \divide\spacetemp by 2
-  \ifdim \spacereduc>\spacetemp \spacereduc=\spacetemp \fi
-  \hskip -\spacereduc
+  \underflow=\minw
+  \advance\underflow by -\wd\textbox
+  \ifdim \underflow<0pt \underflow=0pt \fi
+  \divide\underflow by 2
+  \ifdim \overflow>\underflow \overflow=\underflow \fi
+  \hskip -\overflow
   \vbox{%
     \hh=-#1%
     \advance\hh by \max
@@ -58,8 +57,7 @@
       \iflead \lead\hfil \else \hfil \fi
     }%
   }%
-  \global\spaceused=\spacetemp
-  \global\spacereduc=0pt
+  \overflow=0pt
   \relax
 }
 
@@ -97,7 +95,7 @@
   0.2 0.2 1\or
   0.7 0 0.7\fi}
 
-\everypar{\global\spacereduc=0pt}
+\everypar{\overflow=0pt}
 
 \font\nadpis=csssbx10 at 12pt
 \def\pis#1#2#3{%
@@ -118,12 +116,11 @@
       \global\leadfalse
     \fi\fi}%
   \ifx#3\space
-    \ifdim \spaceused>\normalspace \spaceused=\normalspace \fi
-    \spacetemp=\normalspace
-    \advance\spacetemp by -\spaceused
-    \hskip -\spaceused
-    \global\spaceused=\normalspace
-    \global\spacereduc=\spacetemp
+    \ifdim \underflow>\normalspace \underflow=\normalspace \fi
+    \overflow=\normalspace
+    \advance\overflow by -\underflow
+    \hskip -\underflow
+    \underflow=0pt
   \fi
   \ifx#3-%
     \pp\expandafter\kill
