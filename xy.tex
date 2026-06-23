@@ -126,30 +126,31 @@
   \global\leadfalse}
 
 \catcode`[=13
-\long\def[#1:#2]#3{%
-  \nota{\toix{#1}}{#2}{%
-    \ifx#3[%
-      \global\leadtrue
-    \else\ifx#3-%
-      \global\leadtrue
-    \else
-      \global\leadfalse
-    \fi\fi}%
-  \ifx#3\space
+
+\long\def[#1:#2]{%
+  \def\thenote{\nota{\toix{#1}}{#2}}%
+  \futurelet\nexttoken\impl%
+}
+
+\def\impl{%
+  \thenote{%
+  \ifx\nexttoken[%
+    \global\leadtrue
+  \else\ifx\nexttoken-%
+    \global\leadtrue
+  \else
+    \global\leadfalse
+  \fi\fi}%
+  \ifx\nexttoken\space
     \ifdim \xdiff<-\normalspace \xdiff=-\normalspace \fi
     \ifdim \xdiff<0pt \hskip\xdiff \fi
     \advance\xdiff by \normalspace
   \fi
-  \ifx#3-%
+  \ifx\nexttoken-%
     \pp\expandafter\kill
   \fi
-  #3%
 }
-
 \def\kill#1{}
 
 \catcode`_=13
 \let_=\p
-
-\catcode` =13
-\let \space
